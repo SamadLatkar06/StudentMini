@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lab Map - Smart Campus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="nav">
+    <div class="nav-brand">Smart Campus</div>
+    <div>
+        <span>Welcome, {{ user }} ({{ role }})</span>
+        <a href="{{ url_for('choose_department') }}">Change Department</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+<div class="map-container">
+    <h1 class="map-title">Department Labs</h1>
+    <p class="map-subtitle">Click on a PC to report an issue</p>
+
+    <div class="lab-map single-dept">
+        <div class="lab-column full">
+
+            <div class="lab-room">
+                <h3>High Performance Lab</h3>
+                <div class="pc-grid">
+                    {% for i in range(1,7) %}
+                    <div class="pc-box"
+                         onclick="openReportModal('AIML','High Performance Lab',{{ i }})">
+                        PC {{ i }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div id="reportModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeReportModal()">&times;</span>
+
+        <h2>Report Issue</h2>
+        <p class="modal-location">
+            Location: <strong id="modalLocation"></strong>
+        </p>
+
+        <!-- IMPORTANT: enctype added -->
+        <form action="/submit" method="POST"
+              enctype="multipart/form-data"
+              id="reportForm">
+
+            <input type="hidden" name="location" id="formLocation">
+            <input type="hidden" name="department" id="formDepartment">
+            <input type="hidden" name="lab_name" id="formLabName">
+            <input type="hidden" name="pc_number" id="formPcNumber">
+
+            <div class="form-group">
+                <label>Issue Title</label>
+                <input type="text" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <select name="category">
+                    <option>Infrastructure</option>
+                    <option>IT</option>
+                    <option>Cleanliness</option>
+                    <option>Safety</option>
+                </select>
+            </div>
+
+            <!-- 🔥 IMAGE UPLOAD -->
+            <div class="form-group">
+                <label>Upload Image</label>
+                <input type="file" name="photo" accept="image/*" required>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                Submit Issue
+            </button>
+
+        </form>
+    </div>
+</div>
+
+<script>
+function openReportModal(dept, lab, pc) {
+    var location = dept + ' - ' + lab + ' - PC ' + pc;
+
+    document.getElementById('modalLocation').textContent = location;
+    document.getElementById('formLocation').value = location;
+    document.getElementById('formDepartment').value = dept;
+    document.getElementById('formLabName').value = lab;
+    document.getElementById('formPcNumber').value = pc;
+
+    document.getElementById('reportModal').style.display = 'flex';
+}
+
+function closeReportModal() {
+    document.getElementById('reportModal').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    if (event.target.id == 'reportModal') {
+        closeReportModal();
+    }
+}
+</script>
+
+</body>
+</html>

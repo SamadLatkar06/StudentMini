@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus - Choose Entry</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="welcome-wrapper">
+    <div class="welcome-header">
+        <h1>Smart Campus</h1>
+        <p>Issue Reporting & Resolution Platform</p>
+        <p class="welcome-subtitle">Choose how you want to enter</p>
+    </div>
+
+    <div class="role-cards">
+        <a href="/login?role=student" class="role-card role-student">
+            <div class="role-icon">👤</div>
+            <h3>User / Student</h3>
+            <p>Report campus issues and track your submissions</p>
+        </a>
+
+        <a href="/login?role=teacher" class="role-card role-teacher">
+            <div class="role-icon">🔧</div>
+            <h3>Teacher / Repairer</h3>
+            <p>View and resolve student-reported PC issues</p>
+        </a>
+
+        <a href="/login?role=authority" class="role-card role-authority">
+            <div class="role-icon">📋</div>
+            <h3>Authority</h3>
+            <p>Track issues, view status and score teachers</p>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

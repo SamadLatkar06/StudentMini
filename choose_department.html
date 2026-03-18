@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Department - Smart Campus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="nav">
+    <div class="nav-brand">Smart Campus</div>
+    <div>
+        <span>Welcome, {{ user }}</span>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+<div class="dept-select-container">
+    <h1 class="map-title">Choose Department</h1>
+    <p class="map-subtitle">Select a department to view labs and report issues</p>
+
+    <div class="dept-cards">
+        <a href="{{ url_for('lab_map', department='AIML') }}" class="dept-card aiml-card">
+            <div class="dept-icon">🤖</div>
+            <h3>AIML</h3>
+            <p>Artificial Intelligence & Machine Learning</p>
+        </a>
+        <a href="{{ url_for('lab_map', department='AIDS') }}" class="dept-card aids-card">
+            <div class="dept-icon">🔬</div>
+            <h3>AIDS</h3>
+            <p>Artificial Intelligence & Data Science</p>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>

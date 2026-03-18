@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Smart Campus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="login-wrapper">
+    <div class="login-box">
+        <h2>Smart Campus</h2>
+        <p class="subtitle">{% if selected_role == 'authority' %}Authority Portal{% elif selected_role == 'teacher' %}Teacher / Repairer Portal{% else %}User / Student Portal{% endif %}</p>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+
+        <form action="/login" method="POST">
+            <input type="hidden" name="role" value="{{ selected_role }}">
+            {% if selected_role == 'student' %}
+            <div class="form-group">
+                <input type="text" name="roll_no" placeholder="Roll Number" required>
+            </div>
+            {% else %}
+            <div class="form-group">
+                <input type="email" name="email" placeholder="Email address" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            {% endif %}
+            <button type="submit">Sign In</button>
+        </form>
+
+        <p class="roles-info">
+            <span>Student</span>
+            <span>Teacher</span>
+            <span>Authority</span>
+        </p>
+        <a href="/" class="back-link">← Change entry type</a>
+    </div>
+</div>
+
+</body>
+</html>

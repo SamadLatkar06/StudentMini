@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Repairer Dashboard - Smart Campus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="nav">
+    <div class="nav-brand">Smart Campus</div>
+    <div>
+        <span>Repairer: {{ user }}</span>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+<div class="admin-container">
+
+    <div class="admin-header">
+        <h2>Student-Reported PC Issues</h2>
+        <p>Assign yourself and mark issues as solved</p>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Department</th>
+                    <th>Lab</th>
+                    <th>PC</th>
+                    <th>Category</th>
+                    <th>Image</th>
+                    <th>Status</th>
+                    <th>Reported</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for issue in issues %}
+                <tr>
+                    <td>{{ issue.id }}</td>
+
+                    <td>
+                        <strong>{{ issue.title }}</strong>
+                    </td>
+
+                    <td>{{ issue.department or '-' }}</td>
+                    <td>{{ issue.lab_name or '-' }}</td>
+                    <td>{{ issue.pc_number or '-' }}</td>
+                    <td>{{ issue.category }}</td>
+
+                    <!-- 🔥 IMAGE COLUMN -->
+                    <td>
+                        {% if issue.image %}
+                            <img src="{{ url_for('static',
+                                    filename='uploads/' + issue.image) }}"
+                                 width="70"
+                                 style="border-radius:6px; cursor:pointer;"
+                                 onclick="openImage(this.src)">
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        <span class="status-badge
+                        status-{{ issue.status|replace(' ','-') }}">
+                            {{ issue.status }}
+                        </span>
+                    </td>
+
+                    <td>
+                        {{ issue.created_at.strftime('%d-%m %H:%M')
+                           if issue.created_at else '-' }}
+                    </td>
+
+                    <td>
+                        {% if issue.status == 'Resolved' %}
+                            <span class="done-badge">Done</span>
+                        {% else %}
+                            <form action="{{ url_for('repairer_update',
+                                                     issue_id=issue.id) }}"
+                                  method="POST"
+                                  style="display:inline;">
+
+                                {% if issue.status != 'In Progress' %}
+                                    <button type="submit"
+                                            name="status"
+                                            value="In Progress"
+                                            class="btn-sm btn-warning">
+                                        In Progress
+                                    </button>
+                                {% endif %}
+
+                                <button type="submit"
+                                        name="status"
+                                        value="Resolved"
+                                        class="btn-sm btn-success">
+                                    Mark Resolved
+                                </button>
+
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="10"
+                        style="text-align:center; padding:40px; color:#888;">
+                        No student-reported issues yet
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+<!-- 🔥 IMAGE ZOOM MODAL -->
+<div id="imageModal"
+     style="display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.85);
+            justify-content:center;
+            align-items:center;
+            z-index:1000;">
+
+    <img id="modalImage"
+         style="max-width:80%;
+                max-height:80%;
+                border-radius:10px;">
+</div>
+
+<script>
+function openImage(src) {
+    document.getElementById('modalImage').src = src;
+    document.getElementById('imageModal').style.display = 'flex';
+}
+
+document.getElementById('imageModal').onclick = function() {
+    this.style.display = 'none';
+}
+</script>
+
+</body>
+</html>

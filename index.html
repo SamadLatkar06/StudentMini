@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Issue - Smart Campus</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="nav">
+    <div class="nav-brand">Smart Campus</div>
+    <div>
+        <span>Welcome, {{ user }} ({{ role }})</span>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+
+<div class="page-container">
+    <div class="report-card">
+        <h2>Report <span>Campus Issue</span></h2>
+
+        <form action="/submit" method="POST">
+            <div class="form-group">
+                <label>Issue Title</label>
+                <input type="text" name="title" placeholder="Brief title of the issue" required>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" placeholder="Describe the issue in detail..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select name="category">
+                    <option>Infrastructure</option>
+                    <option>IT</option>
+                    <option>Cleanliness</option>
+                    <option>Safety</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" name="location" placeholder="Building, room, or area">
+            </div>
+            <button type="submit" class="btn-submit">Submit Issue</button>
+        </form>
+
+        {% if role == 'authority' %}
+        <a href="/admin" class="btn-link">Go to Admin Panel →</a>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>
